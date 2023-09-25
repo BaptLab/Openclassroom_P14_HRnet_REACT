@@ -4,11 +4,15 @@ import DataTable from "react-data-table-component";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
+/**
+ * Represents the Employees page component.
+ * @component
+ */
 const Employees = () => {
-  //We get the data from the redux state (array)
+  // We get the data from the redux state (array)
   const employeesList = useSelector((state) => state.employeesList);
 
-  //We set up the datatable
+  // We set up the datatable
   const columns = [
     {
       name: "First Name",
@@ -52,9 +56,13 @@ const Employees = () => {
     },
   ];
 
-  //Search bar (not included in the datatable)
+  // Search bar (not included in the datatable)
   const [search, setSearch] = useState("");
 
+  /**
+   * Handles the search input change event.
+   * @param {Object} event - The change event object.
+   */
   const handleSearch = (event) => {
     setSearch(event.target.value);
   };
@@ -77,9 +85,12 @@ const Employees = () => {
         employee.startDate.toLowerCase().includes(search.toLowerCase())
     );
 
-  //Redirection
+  // Redirection
   const navigate = useNavigate();
 
+  /**
+   * Handles the navigation to the home page.
+   */
   const HandleGoToHome = () => {
     navigate("/");
   };

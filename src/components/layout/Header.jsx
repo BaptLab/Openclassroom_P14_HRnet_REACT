@@ -1,3 +1,7 @@
+/**
+ * Represents the Header component for the HRnet application.
+ * @component
+ */
 const Header = () => {
   return (
     <header role="header">

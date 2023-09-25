@@ -18,35 +18,49 @@ import "react-datepicker/dist/react-datepicker.css";
 
 /* Components */
 import Header from "../components/layout/Header";
-import Popup from "../components/layout/Popup";
+import Modal from "simple_react_modal_component";
 
+/**
+ * Represents the Homepage component.
+ * @component
+ */
 const Homepage = () => {
   const dispatch = useDispatch();
   const employeesList = useSelector((state) => state.employeesList);
 
-  //Popup state
-  const [successPopup, setSuccessPopup] = useState(false);
+  // Modal state
+  const [isOpen, setIsOpen] = useState(false);
 
-  //State for datepicker and select menu
+  // State for datepicker and select menu
   const [startDate, setStartDate] = useState();
   const [birthDate, setBirthDate] = useState();
   const [selectedDepartment, setSelectedDepartment] = useState(""); // State to store selected department
   const [selectedState, setSelectedState] = useState(""); // State to store selected department
 
-  //event for select menus
+  /**
+   * Handles the department selection change event.
+   * @param {Object} selectedOption - The selected department option.
+   */
   const handleDepartmentChange = (selectedOption) => {
     setSelectedDepartment(selectedOption); // Store the selected department
   };
 
+  /**
+   * Handles the state selection change event.
+   * @param {Object} selectedOption - The selected state option.
+   */
   const handleStateChange = (selectedOption) => {
-    setSelectedState(selectedOption); // Store the selected department
+    setSelectedState(selectedOption); // Store the selected state
   };
 
-  //Submit action
+  /**
+   * Handles the form submission to add a new employee.
+   * @param {Object} e - The form submission event.
+   */
   const handleSave = (e) => {
     e.preventDefault();
 
-    //We get the data from the input
+    // We get the data from the input
     const firstName = document.getElementById("first-name");
     const lastName = document.getElementById("last-name");
     const street = document.getElementById("street");
@@ -55,7 +69,7 @@ const Homepage = () => {
     const dateOfBirth = document.getElementById("birthDate");
     const dateOfStart = document.getElementById("startDate");
 
-    //we create a new user with the data
+    // We create a new user with the data
     const employee = {
       firstName: firstName.value,
       lastName: lastName.value,
@@ -69,14 +83,17 @@ const Homepage = () => {
     };
 
     console.log("value being pushed inside the employees list", employee);
-    //we push the new employee in the array via the dispatch
+    // We push the new employee in the array via the dispatch
     dispatch(addEmployee(employee));
-    //popup to indicate the creation of an employee
-    setSuccessPopup(true);
-    //We clean the form afterward
+    // Popup to indicate the creation of an employee
+    setIsOpen(true);
+    // We clean the form afterward
     cleanForm();
   };
 
+  /**
+   * Resets the form input fields and state values.
+   */
   function cleanForm() {
     // Reset input fields
     document.getElementById("first-name").value = "";
@@ -86,17 +103,20 @@ const Homepage = () => {
     document.getElementById("zip-code").value = "";
 
     // Reset date pickers
-    setStartDate();
-    setBirthDate();
+    setStartDate(null);
+    setBirthDate(null);
 
     // Reset Select components for department and state
     setSelectedDepartment("");
     setSelectedState("");
   }
 
-  //redirection
+  // Redirection
   const navigate = useNavigate();
 
+  /**
+   * Handles the redirection to the Employees page.
+   */
   const handleRedirectToEmployees = () => {
     navigate("/employees");
   };
@@ -201,10 +221,10 @@ const Homepage = () => {
             </div>
           </form>
         </section>
-        <Popup
-          trigger={successPopup}
-          setTrigger={setSuccessPopup}
-          closingMsg="Close"
+        <Modal
+          trigger={isOpen} // Pass the state variable here
+          setTrigger={setIsOpen} // Pass the state update function here
+          closingMsg="Fermer"
           popUpMsg="Nouvel employé enregistré !"
         />
       </main>
